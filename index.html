@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="手机网页应用远程开发测试">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>随手记 · 远程开发测试</title>
+  <style>
+    :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif; background: #f4fbfa; color: #153b3a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: linear-gradient(160deg, #e5f6f3, #f7fbfa 45%, #eef6ff); }
+    main { width: min(680px, 100%); margin: 0 auto; padding: max(28px, env(safe-area-inset-top)) 18px 32px; }
+    .card { background: rgba(255,255,255,.9); border: 1px solid #d6ece8; border-radius: 24px; padding: 22px; box-shadow: 0 12px 40px rgba(15,118,110,.09); }
+    h1 { margin: 0 0 8px; font-size: 30px; letter-spacing: -.04em; }
+    .sub { margin: 0 0 22px; color: #577472; line-height: 1.55; }
+    textarea { width: 100%; min-height: 180px; resize: vertical; border: 1px solid #b9d9d4; border-radius: 16px; padding: 16px; font: inherit; font-size: 17px; line-height: 1.6; color: inherit; background: #fbfffe; outline: none; }
+    textarea:focus { border-color: #0f766e; box-shadow: 0 0 0 4px rgba(15,118,110,.12); }
+    .actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    button { border: 0; border-radius: 999px; padding: 12px 18px; font: inherit; font-weight: 700; cursor: pointer; }
+    #save { background: #0f766e; color: white; }
+    #clear { background: #e4f1ef; color: #155e58; }
+    .status { margin-top: 14px; font-size: 14px; color: #52716e; min-height: 21px; }
+    .badge { display: inline-block; margin-top: 20px; padding: 7px 11px; border-radius: 999px; background: #e9f5ff; color: #285b83; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <h1>随手记</h1>
+      <p class="sub">这是一个手机网页应用测试页。你可以从远程终端修改它，刷新手机页面后马上看到变化。</p>
+      <textarea id="note" aria-label="随手记内容" placeholder="写下今天要做的事……"></textarea>
+      <div class="actions">
+        <button id="save" type="button">保存到本机</button>
+        <button id="clear" type="button">清空</button>
+      </div>
+      <div id="status" class="status" role="status"></div>
+      <span class="badge">远程开发链路测试版 · v2</span>
+    </section>
+  </main>
+  <script>
+    const note = document.querySelector('#note');
+    const status = document.querySelector('#status');
+    const saved = localStorage.getItem('remote-web-demo-note');
+    if (saved) note.value = saved;
+    document.querySelector('#save').addEventListener('click', () => {
+      localStorage.setItem('remote-web-demo-note', note.value);
+      status.textContent = '已保存到这台设备的浏览器';
+    });
+    document.querySelector('#clear').addEventListener('click', () => {
+      note.value = '';
+      localStorage.removeItem('remote-web-demo-note');
+      status.textContent = '已清空';
+    });
+    if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+  </script>
+</body>
+</html>

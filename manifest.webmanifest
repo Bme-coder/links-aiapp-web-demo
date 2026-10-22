@@ -1,0 +1,9 @@
+{
+  "name": "随手记 · 远程开发测试",
+  "short_name": "随手记",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4fbfa",
+  "theme_color": "#0f766e",
+  "lang": "zh-CN"
+}
